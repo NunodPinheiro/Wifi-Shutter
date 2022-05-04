@@ -1,0 +1,60 @@
+author: BRaga IOT challenge
+description: Braga IOT challenge example
+version: 1.0
+arch: esp8266
+libs_version: ${mos.version}
+modules_version: ${mos.version}
+mongoose_os_version: ${mos.version}
+
+# Optional. List of tags for online search.
+tags:
+  - c
+
+# List of files / directories with C sources. No slashes at the end of dir names.
+sources:
+  - src
+
+# List of dirs. Files from these dirs will be copied to the device filesystem
+filesystem:
+  #- mnt
+
+# Wifi network variables
+config_schema:
+  - ["wifi", "o", {hide: true}]
+  - ["cportal.enable", true ]
+  - ["wifi.ap", "o", {title: "WiFi Access Point Config"}]
+  - ["wifi.ap.enable", "b", true, {title: "Enable"}]
+  - ["wifi.ap.ssid", "s", "BIOTC_EXEMPLO", {title: "SSID"}]
+  - ["wifi.ap.pass", "s", "bragaiotchallenge", {title: "Password", type: "password"}]
+  - [ "cportal.setup.timeout", "i", 45, {title: "Timeout, in seconds, before considering a WiFi connection test as failed"}]
+  - [ "cportal.setup.disable", "i", 2, {title: "Action to perform after successful test and copy/save values -- 0 - do nothing, 1 - Disable AP (wifi.ap.enable), 2 - Disable AP and Captive Portal (cportal.enable)"}]
+  - [ "cportal.setup.enable", "i", 0, {title: "Settings to enable after successful test and copy/save values -- 0 - do nothing, 1 - Enable DNS SD (dns_sd.enable)"}]
+  - [ "cportal.setup.reboot", "i", 8, {title: "0 to disable, or value (in seconds) to wait and then reboot device, after successful test (and copy/save values)"}]
+  - [ "cportal.hostname", "s", "brgiotchallenge.configuration.portal", {title: "Hostname to use for captive portal redirect"}]
+  - [ "cportal.ip_redirect", "b", true, {title: "Send 302 redirect to configured hostname when IP directly accessed"}]
+
+build_vars:
+  # Required to start device in AP+STA mode (to prevent disconnect on scan call)
+  MGOS_WIFI_ENABLE_AP_STA: 1
+  
+
+libs:
+  - origin: ./Libraries/ui
+  #- origin: ./Libraries/wifi
+  - origin: https://github.com/mongoose-os-libs/ca-bundle
+  - origin: https://github.com/mongoose-os-libs/mjs
+  - origin: https://github.com/mongoose-os-libs/rpc-common
+  - origin: https://github.com/mongoose-os-libs/rpc-loopback
+  - origin: https://github.com/mongoose-os-libs/rpc-service-config
+  - origin: https://github.com/mongoose-os-libs/rpc-service-fs
+  - origin: https://github.com/mongoose-os-libs/rpc-service-gpio
+  - origin: https://github.com/mongoose-os-libs/rpc-service-i2c
+  - origin: https://github.com/mongoose-os-libs/rpc-uart
+  - origin: https://github.com/tripflex/captive-portal
+  - origin: https://github.com/tripflex/captive-portal-wifi-rpc
+  - origin: https://github.com/tripflex/captive-portal-wifi-setup
+  - origin: https://github.com/mongoose-os-libs/adc
+
+
+# Used by the mos tool to catch mos binaries incompatible with this file format
+manifest_version: 2021-04-05
